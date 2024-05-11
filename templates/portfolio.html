@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-family: "Nunito", sans-serif;
+            background-image: url('/static/terms1.avif');
+            background-size: cover; /* Cover the entire viewport */
+        }
+
+        .portfolio-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+        .project-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #262626;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: solid 2px black;
+        }
+
+        .progress-bar-inner {
+            height: 100%;
+            background-color: #4F85EE;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .progress-bar-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4F85EE;
+            text-align: center;
+        }
+
+        .project-details {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .project-details p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .youtube-video {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .abstract {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #555;
+        }
+
+        .impact {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #555;
+        }
+
+        .contact-info {
+            text-align: center;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="portfolio-container">
+        <div class="project-name" id="projectName"></div>
+        
+        <div class="progress-bar">
+            <div class="progress-bar-inner" id="progressBar"></div>
+        </div>
+        
+        <div class="progress-bar-text" id="fundReceivedText"></div>
+        
+        <div class="project-details">
+            <p>Total Fund Received: <span id="totalFund"></span></p>
+            <p>Share Price: <span id="sharePrice"></span></p>
+            <p>No. of Shareholders: <span id="shareholders"></span></p>
+            <p>Expiring Date: <span id="expiringDate"></span></p>
+            <p>Category: <span id="category"></span></p>
+        </div>
+        
+        <div class="youtube-video" id="youtubeVideo"></div>
+        
+        <div class="abstract" id="abstract"></div>
+        
+        <div class="impact" id="impact"></div>
+        
+        <div class="contact-info">State: <span id="state"></span>, City: <span id="city"></span>, Contact: <span id="email"></span></div>
+        <br>
+        <button id = "invest" style="display: none;font-size: 25px;border:green;border-radius: 30px;padding: 7px;background-color: green;color: aliceblue;width: 50%;margin: 0 auto;">Invest</button>
+    </div>
+
+    <script>
+        // Fetch project data from Flask route
+        fetch("/retrieve_project_data/{{user_id}}/{{project_id}}")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("projectName").innerText = data.name;
+            document.getElementById("sharePrice").innerText = data.share_price;
+            document.getElementById("shareholders").innerText = data.shareholders;
+            document.getElementById("expiringDate").innerText = data.expiring_date;
+            document.getElementById("category").innerText = data.category;
+            document.getElementById("youtubeVideo").innerHTML = `<iframe width="560" height="315" src="${data.youtube_link}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            document.getElementById("abstract").innerText = data.abstract;
+            document.getElementById("impact").innerText = data.impact;
+            document.getElementById("state").innerText = data.state;
+            document.getElementById("city").innerText = data.city;
+            document.getElementById("email").innerText = data.email;
+            // Calculate total fund based on share price and number of shareholders
+            const sharePrice = parseFloat(data.share_price);
+            const shareholders = parseInt(data.shareholders);
+            const totalFund = sharePrice * shareholders;
+            document.getElementById("totalFund").innerText = totalFund;
+
+            
+            // Calculate progress bar width
+            const totalFundReceived = parseFloat(data.total_fund);
+            const progressBarWidth = (totalFund / totalFundReceived) * 100 + "%";
+            document.getElementById("progressBar").style.width = progressBarWidth;
+            document.getElementById("fundReceivedText").innerText = `Targeted Fund ${totalFundReceived}/-`;
+
+            if (data.user_id != "none"){
+                document.getElementById('invest').style.display = "block";
+            }
+
+        })
+        .catch(error => console.error("Error fetching project data:", error));
+    </script>
+</body>
+</html>

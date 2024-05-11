@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+<title>Investor or Startup</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Nunito", sans-serif;
+        background-image: url('/static/graph.avif');
+        background-size: cover; /* Cover the entire viewport */
+        background-attachment: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .container {
+        text-align: center;
+    }
+    h1 {
+        font-size: 32px;
+        color: #333;
+        margin-bottom: 30px;
+        animation: fadeInDown 1s ease;
+    }
+    .options {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .option {
+        margin: 0 20px;
+        padding: 20px 40px;
+        background-color: #4F85EE;
+        color: white;
+        font-size: 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    .option:hover {
+        transform: scale(1.1);
+    }
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Are you an Investor or a Startup?</h1>
+    <div class="options">
+        <div class="option" onclick="choose('investor')">Investor</div>
+        <div class="option" onclick="choose('startup')">Startup</div>
+    </div>
+</div>
+
+<script>
+
+function choose(option) {
+    var user_id = "{{ user_id }}";  // Pass the user_id from the template context
+    var data = { role: option, user_id: user_id };
+
+    fetch('/role_choosing/' + user_id, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Redirect to appropriate page based on the chosen role
+            if (data.role === 'investor') {
+                window.location.href = '/role_choosing/enter_investor_details/' + data.user_id;
+            } else if (data.role === 'startup') {
+                window.location.href = '/role_choosing/enter_project_details/' + data.user_id;
+            } else {
+                console.error('Invalid role:', data.role);
+            }
+        } else {
+            console.error('Role selection failed:', data.message);
+            // Handle role selection failure if needed
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle error if needed
+    });
+}
+
+</script>
+
+</body>
+</html>

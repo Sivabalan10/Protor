@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<title>Startup Details</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Nunito", sans-serif;
+        background-image: url('/static/graph.avif');
+        background-size: cover; /* Cover the entire viewport */
+        background-attachment: fixed;
+        color: #4f85ee;
+    }
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 35px;
+        box-shadow: 5px 5px 5px 7px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border-radius: 10px;
+        
+    }
+    .segment, .proceed-btn {
+    opacity: 0; /* Initially set opacity to 0 */
+    animation: fadeIn 2s ease forwards; /* Apply fade-in animation */
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0; /* Start from opacity 0 */
+        }
+        to {
+            opacity: 1; /* Fade in to opacity 1 */
+        }
+    }
+    h1 {
+        text-align: center;
+    }
+    .segment {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #4f85ee;
+        padding-bottom: 20px;
+    }
+    .segment:last-child {
+        border-bottom: none;
+    }
+    .label {
+        font-weight: bold;
+        margin-bottom: 10px;
+        display: block;
+    }
+    .input-field {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .dropdown {
+        width:90%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #f9f9f9;
+    }
+    .checkbox {
+        margin-bottom: 20px;
+    }
+    .proceed-btn {
+        background-color: #4f85ee;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+    .proceed-btn:hover {
+        background-color: #366fc2;
+    }
+    .progress-bar {
+        background-color: #ccc;
+        height: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    .progress {
+        background-color:#4f85ee;
+        height: 100%;
+        width: 0;
+        border-radius: 5px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Startup Details</h1>
+
+    <!-- Segment 1: Personal Information -->
+    <div class="segment">
+        <div class="progress-bar">
+            <div class="progress" id="progress1"></div>
+        </div>
+        <label class="label" for="name">Name:</label>
+        <input type="text" id="name" class="input-field" required>
+        <label class="label" for="project_name">Project Name:</label>
+        <input type="text" id="project_name" class="input-field" required>
+        <label class="label" for="email">Email:</label>
+        <input type="email" id="email" class="input-field" required>
+        <label class="label" for="type">Are you individual or startup:</label>
+        <select id="type" class="dropdown" required>
+            <option value="">Select Type</option>
+            <option value="Individual">Individual</option>
+            <option value="Startup">Startup</option>
+        </select>
+        <label class="label" for="state">State:</label>
+        <input type="text" id="state" class="input-field" required>
+        <label class="label" for="city">Country:</label>
+        <input type="text" id="country" class="input-field" required>
+    </div>
+
+    <!-- Segment 2: Project Details -->
+    <div class="segment">
+        <div class="progress-bar">
+            <div class="progress" id="progress2"></div>
+        </div>
+        <label class="label" for="abstract">Abstract:</label>
+        <textarea id="abstract" class="input-field" rows="4" required></textarea>
+        <label class="label" for="category">Category:</label>
+        <select id="category" class="dropdown" required>
+            <option value="">Select Category</option>
+            <option value="Agriculture">Agriculture</option>
+            <option value="Environment">Environment</option>
+            <option value="Energy">Energy</option>
+            <option value="Assistive Technology">Assistive Technology</option>
+            <option value="Education">Education</option>
+            <option value="Waste Management">Waste Management</option>
+        </select>
+        <label class="label" for="demo_link">Demo Link:</label>
+        <input type="url" id="demo_link" class="input-field" required>
+        <label class="label" for="linkedin_url">LinkedIn URL:</label>
+        <input type="url" id="linkedin_url" class="input-field" required>
+        <label class="label" for="impact">How it impacts society:</label>
+        <textarea id="impact" class="input-field" rows="4" required></textarea>
+        <label class="label" for="service">Service:</label>
+        <select id="service" class="dropdown" required>
+            <option value="">Select Service</option>
+            <option value="Govt">Government</option>
+            <option value="Private">Private</option>
+        </select>
+    </div>
+
+    <!-- Segment 3: Funding Details -->
+    <div class="segment">
+        <div class="progress-bar">
+            <div class="progress" id="progress3"></div>
+        </div>
+        <label class="label" for="expected_fund">Expected Fund:</label>
+        <input type="number" id="expected_fund" class="input-field" required>
+        <label class="label" for="expected_share_value">Expected Share Value:</label>
+        <input type="number" id="expected_share_value" class="input-field" required>
+        <label class="label" for="valid_upto">Valid Upto:</label>
+        <input type="date" id="valid_upto" class="input-field" required>
+    </div>
+
+    <!-- Terms and Conditions -->
+    <div class="segment">
+        <input type="checkbox" id="terms" class="checkbox" required>
+        <label class="label" for="terms">I agree to the <a href="/termsandconditionsforstartup">terms and conditions</a></label>
+    </div>
+
+    <!-- Proceed Button -->
+    <button class="proceed-btn" onclick="proceed()">Proceed</button>
+</div>
+
+<script>
+    function proceed() {
+        var name = document.getElementById("name").value;
+        var projectName = document.getElementById("project_name").value;
+        var email = document.getElementById("email").value;
+        var type = document.getElementById("type").value;
+        var state = document.getElementById("state").value;
+        var country = document.getElementById("country").value;
+        var abstract = document.getElementById("abstract").value;
+        var category = document.getElementById("category").value;
+        var demoLink = document.getElementById("demo_link").value;
+        var linkedinUrl = document.getElementById("linkedin_url").value;
+        var impact = document.getElementById("impact").value;
+        var service = document.getElementById("service").value;
+        var expectedFund = document.getElementById("expected_fund").value;
+        var expectedShareValue = document.getElementById("expected_share_value").value;
+        var validUpto = document.getElementById("valid_upto").value;
+        var terms = document.getElementById("terms").checked;
+        var store_data = "none";
+        var user_id = "{{ user_id }}";
+        // Validation
+        if (!name || !projectName || !email || !type || !state || !country || !abstract || !category || !demoLink || !linkedinUrl || !impact || !service || !expectedFund || !expectedShareValue || !validUpto || !terms) {
+            Swal.fire({
+                        icon: 'error',
+                        title: 'Submission failed',
+                        text: 'Field cannot be empty',
+                    });
+            return;
+        }
+
+        // Proceed to submit data
+        var data2 = {
+            'startupName': projectName,
+            'expectedAmount':expectedFund
+        }
+        // Store details for transaction
+    try {
+        fetch('http://192.168.21.231:3000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data2),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data.startupAddress);
+            store_data = data.startupAddress;
+            console.log(store_data);
+
+            // Now that store_data is available, proceed with storing data in Firebase
+            var data = {
+                user_id: user_id,
+                name: name,
+                projectName: projectName,
+                email: email,
+                type: type,
+                state: state,
+                country: country,
+                abstract: abstract,
+                category: category,
+                demoLink: demoLink,
+                linkedinUrl: linkedinUrl,
+                impact: impact,
+                service: service,
+                expectedFund: expectedFund,
+                expectedShareValue: expectedShareValue,
+                validUpto: validUpto,
+                startup_address: store_data
+            };
+
+            fetch('/store_project', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Submitted Successfully!',
+                        text: 'Redirecting please wait....',
+                        showConfirmButton: false
+                    });
+                    setTimeout(function() {window.location.href = '/project/'+user_id;}, 2500);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Submission failed',
+                        text: 'Something went wrong',
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert("An error occurred. Please try again later.");
+            });
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert("An error occurred. Please try again later.");
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        alert("An error occurred. Please try again later.");
+    }
+
+    
+    // Update progress bar width based on input completion
+    var progress1 = document.getElementById("progress1");
+    var progress2 = document.getElementById("progress2");
+    var progress3 = document.getElementById("progress3");
+    var inputs = document.querySelectorAll(".input-field");
+    var dropdowns = document.querySelectorAll(".dropdown");
+    var checkboxes = document.querySelectorAll(".checkbox");
+
+    function updateProgress() {
+        var totalInputs = inputs.length + dropdowns.length + checkboxes.length;
+        var completedInputs = 0;
+        inputs.forEach(input => {
+            if (input.value) {
+                completedInputs++;
+            }
+        });
+        dropdowns.forEach(dropdown => {
+            if (dropdown.value) {
+                completedInputs++;
+            }
+        });
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                completedInputs++;
+            }
+        });
+
+        var progressWidth = (completedInputs / totalInputs) * 100;
+        progress1.style.width = progressWidth + "%";
+        progress2.style.width = progressWidth + "%";
+        progress3.style.width = progressWidth + "%";
+    }
+
+    inputs.forEach(input => {
+        input.addEventListener("input", updateProgress);
+    });
+
+    dropdowns.forEach(dropdown => {
+        dropdown.addEventListener("change", updateProgress);
+    });
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", updateProgress);
+    });
+    }
+</script>
+</body>
+</html>
