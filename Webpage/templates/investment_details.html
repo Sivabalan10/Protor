@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Details</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Nunito", sans-serif;
+            background-image: url('/static/graph.avif');
+            background-size: cover; /* Cover the entire viewport */
+            background-attachment: fixed;
+            color: grey;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            background-color:#fff;
+        }
+
+        th {
+            background-color: #4F85EE;
+            color: #fff;
+        }
+
+        .transaction-history {
+            margin-top: 30px;
+        }
+
+        .transaction-history table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transaction-history th, .transaction-history td {
+            padding: 10px;
+            text-align: left;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .transaction-history th {
+            background-color: #4F85EE;
+            color: #fff;
+        }
+        h1{
+            color: #4F85EE;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Investment Details</h1>
+
+        <!-- Segment 1: Investment Records -->
+        <div class="investment-records">
+            <h2>Investment Records</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name of the Stocks</th>
+                        <th>Value</th>
+                        <th>Quantity</th>
+                        <th>Total Amount Invested</th>
+                    </tr>
+                </thead>
+                <tbody id="investmentRecords">
+                    <!-- Data will be filled dynamically -->
+                </tbody>
+                <div id="grandTotalInvested" style="color:#00cc00;font-size:2em;font-weight: bolder;text-shadow: 5px 5px 5px white;"></div>
+            </table>
+            
+        </div>
+
+        <!-- Segment 2: Transaction History -->
+        <div class="transaction-history">
+            <h2>Transaction History</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Name of the Stock</th>
+                    </tr>
+                </thead>
+                <tbody id="transactionHistory">
+                    <!-- Data will be filled dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Fetch investment records from Flask
+        fetch("/investor/investment_records")
+            .then(response => response.json())
+            .then(data => {
+                const investmentRecords = document.getElementById("investmentRecords");
+                let grandTotal = 0;
+                data.forEach(record => {
+                    grandTotal += record.total_amount;
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${record.name}</td>
+                        <td>${record.value}</td>
+                        <td>${record.quantity}</td>
+                        <td>${record.total_amount}</td>
+                    `;
+                    investmentRecords.appendChild(row);
+                });
+                document.getElementById("grandTotalInvested").textContent = `Grand Total Invested : Rs ${grandTotal}`;
+            })
+            .catch(error => console.error("Error fetching investment records:", error));
+
+        // Fetch transaction details from Flask
+        fetch("/investor/transaction_details")
+            .then(response => response.json())
+            .then(data => {
+                const transactionHistory = document.getElementById("transactionHistory");
+                data.forEach(transaction => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${transaction.date}</td>
+                        <td>${transaction.amount}</td>
+                        <td>${transaction.stock_name}</td>
+                    `;
+                    transactionHistory.appendChild(row);
+                });
+            })
+            .catch(error => console.error("Error fetching transaction history:", error));
+    </script>
+</body>
+</html>

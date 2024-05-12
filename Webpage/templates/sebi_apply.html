@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEBI Apply</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Nunito", sans-serif;
+            background-image: url('/static/login.jpg');
+            background-size: cover; /* Cover the entire viewport */
+            background-attachment: fixed;
+            color: #404040;
+            
+        }
+        h1,h2{
+            color:#4F85EE;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease;
+            background-color:#f9f9f9;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .segment {
+            margin-bottom: 20px;
+            animation: slideInLeft 1s ease;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: calc(100% - 20px);
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .form-group select {
+            width: calc(100% - 22px);
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .submit-btn {
+            background-color: #4F85EE;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            animation: slideInUp 1s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #3461A4;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center;"><u>SEBI Apply</u></h1>
+        <div class="segment">
+            <h2><u>Apply IPO</u></h2>
+            <div class="form-group">
+                <label for="companyName">Company Name</label>
+                <input type="text" id="companyName" name="companyName">
+            </div>
+            <div class="form-group">
+                <label for="ipoOpenDate">IPO Open Date</label>
+                <input type="date" id="ipoOpenDate" name="ipoOpenDate">
+            </div>
+            <div class="form-group">
+                <label for="ipoCloseDate">IPO Close Date</label>
+                <input type="date" id="ipoCloseDate" name="ipoCloseDate">
+            </div>
+            <div class="form-group">
+                <label for="companyAddress">Company Address</label>
+                <input type="text" id="companyAddress" name="companyAddress">
+            </div>
+        </div>
+        <div class="segment">
+            <h2><u>Enter Following Detail</u></h2>
+            <div class="form-group">
+                <label for="appName">Application Name</label>
+                <input type="text" id="appName" name="appName">
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address">
+            </div>
+            <div class="form-group">
+                <label for="pan">PAN</label>
+                <input type="text" id="pan" name="pan">
+            </div>
+            <div class="form-group">
+                <label for="accountNumber">Account Number</label>
+                <input type="text" id="accountNumber" name="accountNumber">
+            </div>
+            <h2>Cut off price</h2>
+            <div class="form-group">
+                <label for="bid1">Bid 1</label>
+                <input type="number" id="bid1" name="bid1">
+            </div>
+            <div class="form-group">
+                <label for="bid2">Bid 2</label>
+                <input type="number" id="bid2" name="bid2">
+            </div>
+            <div class="form-group">
+                <label for="bid3">Bid 3</label>
+                <input type="number" id="bid3" name="bid3">
+            </div>
+        </div>
+        <button class="submit-btn">Submit</button>
+    </div>
+</body>
+</html>

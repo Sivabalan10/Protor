@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-family: "Nunito", sans-serif;
+            background-image: url('/static/homepageback1.jpg');
+            background-size: cover;
+            font-size: large;
+        }
+
+        .portfolio-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border-left: 10px solid #4F85EE;
+            border-radius: 10px ;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #e6e6e6;
+            
+        }
+
+        .project-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #262626;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: solid 2px black;
+        }
+
+        .progress-bar-inner {
+            height: 100%;
+            background-color: #4F85EE;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .progress-bar-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4F85EE;
+            text-align: center;
+        }
+
+        .project-details {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .project-details p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .youtube-video {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .abstract {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #555;
+        }
+
+        .impact {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #555;
+        }
+
+        .contact-info {
+            text-align: center;
+            color: #555;
+        }
+        .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f9f9f9;
+        padding: 35px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        z-index: 9999;
+    }
+    .popup #pop-but{
+        background-color:#ff4d4d;
+        font-family: "Nunito", sans-serif;
+        font-size: large;
+        padding: 10px;
+        border-radius: 10px;
+        color: white;
+        border: #4F85EE solid 1px;
+
+
+    }
+    .popup input{
+        padding: 10px;
+        border-radius: 7px;
+    }
+    .popup #pop-but2{
+        background-color: #4F85EE;
+        font-size: large;
+        font-family: "Nunito", sans-serif;
+        padding: 10px;
+        border-radius: 10px;
+        color: white;
+        border: #4F85EE solid 1px;
+
+    }
+    .popup .popup-buttons{
+        margin-left: 50%;
+    }
+    /* Style for the overlay background */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+        }
+        .loading-indicator {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="portfolio-container">
+        <h1 style="color: #4F85EE;text-align: center;" id = "projectname"></h1>
+        
+        <div class="progress-bar">
+            <div class="progress-bar-inner" id="progressBar"></div>
+        </div>
+        
+        <!-- <div class="progress-bar-text" id="fundReceivedText"></div> -->
+        
+        <div class="project-details">
+            <h2 style="color: brown;"><span id="totalFund" ></span></h2>
+            <h2>Total Fund Received: <span id="totalFundreceived"></span></h2>
+            <p>Expiring Date: <span id="expiringDate"></span></p>
+            <p>Category: <span id="category"></span></p>
+        </div>
+        
+        <div class="youtube-video" id="youtubeVideo"></div>
+        
+        <div class="abstract" id="abstract"></div>
+        
+        <div class="impact" id="impact"></div>
+        
+        <div class="contact-info">State: <span id="state"></span>, City: <span id="city"></span>, Contact: <span id="email"></span></div>
+        <br>
+        <button id = "invest" style="display: none;font-size: 25px;border:green;border-radius: 30px;padding: 7px;background-color: green;color: aliceblue;width: 50%;margin: 0 auto;" onclick="openPopup()">Invest</button>
+        <div id="popup" class="popup">
+            <h2>Investment Details</h2>
+            <form id="investmentForm">
+                <label for="amount">Enter Amount:</label>
+                <input type="number" id="amount" name="amount" required>
+                <br><br>
+                <div class = "popup-buttons">
+                <button type="button" id = "pop-but" onclick="closePopup()">Cancel</button>
+                <button type="button" id = "pop-but2" onclick="proceed()">Invest</button>
+            </div>
+            </form>
+        </div>
+        <div id="overlay" class="overlay"></div>
+    </div>
+    <div id="loadingIndicator" class="loading-indicator">
+        <div class="loader"></div>
+    </div>
+    <script>
+        // Fetch project data from Flask route
+        user_id = '{{user_id}}';
+        project_id = '{{project_id}}';
+        document.getElementById('loadingIndicator').style.display = 'block';
+        fetch("/retrieve_project_data/{{user_id}}/{{project_id}}")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("projectname").innerText = data.name;
+            document.getElementById("totalFundreceived").innerText = data.total_amount_invested;
+            document.getElementById("expiringDate").innerText = data.expiring_date;
+            document.getElementById("category").innerText = data.category;
+            document.getElementById("youtubeVideo").innerHTML = `<iframe width="560" height="315" src="${data.youtube_link}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            document.getElementById("abstract").innerText = data.abstract;
+            document.getElementById("impact").innerText = data.impact;
+            document.getElementById("state").innerText = data.state;
+            document.getElementById("city").innerText = data.city;
+            document.getElementById("email").innerText = data.email;
+            document.getElementById("totalFund").innerText = `Targeted Fund: ${data.total_fund}`;
+            
+            var invested = data.total_amount_invested;
+            var expected = data.total_fund;
+            // Calculate progress bar width
+            const progressBarWidth = (invested / expected) * 100 + "%";
+            document.getElementById("progressBar").style.width = progressBarWidth;
+            
+
+            if (data.user_id == "investor"){
+                document.getElementById('invest').style.display = "block";
+            }
+
+            console.log(data.user_id);
+            if (invested >= expected){
+                document.getElementById('invest').style.display = "none";
+                document.getElementById("totalFund").style.color = "green";
+                document.getElementById("totalFund").innerText = "Targeted Fund Reached!";
+                
+            }
+            document.getElementById('loadingIndicator').style.display = 'none';
+
+        })
+        .catch(error => console.error("Error fetching project data:", error));
+        
+       
+function openPopup() {
+    document.getElementById('popup').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+}
+
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+}
+
+
+
+async function proceed() {
+            var invested_amount = document.getElementById('amount').value;
+            document.getElementById('loadingIndicator').style.display = 'block';
+            
+            try {
+                // Fetch project data
+                const projectResponse = await fetch("/retrieve_project_data/" + user_id + "/" + project_id);
+                const projectData = await projectResponse.json();
+                
+                // Fetch investor name
+                const investorResponse = await fetch("/investor_name_get/" + project_id);
+                const investorData = await investorResponse.json();
+                const investor_name = investorData.name;
+                
+                // Store transaction data
+                store_transaction_data(projectData.startup_address, investor_name, invested_amount);
+                
+                // Store investment details
+                const check = await store_investment_details(invested_amount);
+                console.log(check);
+
+                if (check) {
+                    document.getElementById('loadingIndicator').style.display = 'none';
+                    location.reload();
+                }
+            } catch (error) {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                console.error("Error:", error);
+            }
+        
+
+        async function store_investment_details(amount) {
+            try {
+                const response = await fetch('/update_fund_records/{{user_id}}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ total_amount_invested: amount }),
+                });
+
+                const data = await response.json();
+                console.log("Updated fund records");
+                return true;
+            } catch (error) {
+                console.error('Error:', error);
+                return false;
+            }
+        }
+
+        function store_transaction_data(address,name,amount){
+            fetch('http://192.168.21.231:3000/invest', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                        'startupAddress': address,
+                        'investorName': name,
+                        'amount':amount.toString()}),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Transaction stored in block");
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    })
+        }
+    }
+    </script>
+</body>
+</html>

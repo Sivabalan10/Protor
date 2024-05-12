@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <script src='https://kit.fontawesome.com/54a2c781b6.js' crossorigin='anonymous'></script> 
+    <title>Profile Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Nunito", sans-serif;
+            background-image: url('/static/terms1.avif');
+            background-size: cover; /* Cover the entire viewport */
+            background-attachment: fixed;
+        }
+
+        .profile-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Align all content center */
+        }
+
+        .profile-image {
+            border-radius: 50%;
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: inline-block; /* Make image inline */
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4F85EE;
+            display: block; /* Make name block-level element */
+        }
+
+        .edit-btn {
+            color: #4F85EE;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .profile-details {
+            margin-bottom: 20px;
+            text-align: center; /* Align details center */
+        }
+
+        .profile-details label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .logout-btn {
+            background-color: #ff3333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .logout-btn:hover {
+            background-color: grey;
+        }
+    </style>
+</head>
+<body>
+    <br><br><br><br><br>
+    <div class="profile-container">
+        <div class="profile-image">
+            <i class='fas fa-user-circle' style='font-size:60px;color:grey'></i>
+        </div>
+        <div class="profile-name" id="profileName"></div>
+        <div class="profile-details">
+            <label>Email:</label> <span id="email"></span>
+        </div>
+        <div class="profile-details">
+            <label>Account Type:</label> <span id="accountType"></span>
+        </div>
+        <button class="logout-btn" id="logoutBtn">Logout</button>
+    </div>
+
+    <script>
+        // Fetch profile data from Flask route
+        fetch("/retrive_profile_data/{{user_id}}")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("profileName").textContent = data.name;
+                document.getElementById("email").textContent = data.email;
+                document.getElementById("accountType").textContent = data.account_type;
+            })
+            .catch(error => console.error("Error fetching profile data:", error));
+
+        document.getElementById("logoutBtn").addEventListener("click", function() {
+            window.location.href = "/logout"; // Redirect to the logout route
+        });
+    </script>
+</body>
+</html>

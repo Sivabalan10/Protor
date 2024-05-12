@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPO Allotment Details</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Nunito", sans-serif;
+            background-image: url('/static/terms1.avif');
+            background-size: cover; /* Cover the entire viewport */
+            background-attachment: fixed;
+            color: #333;
+        }
+
+        .ipo-details-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+        .ipo-heading {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4F85EE;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .ipo-details {
+            margin-bottom: 10px;
+            border: darkgray solid 2px;
+            padding: 20px;
+        }
+
+        .ipo-details label {
+            font-weight: bold;
+        }
+
+        .status {
+            color: red;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .shares-alloted {
+            font-size: 20px;
+            color: #4F85EE;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="ipo-details-container fade-in">
+        <div class="ipo-heading">IPO Allotment Details</div>
+        <div class="ipo-details">
+            <label>Company Name:</label> <span id="companyName"></span>
+        </div>
+        <div class="ipo-details">
+            <label>PAN:</label> <span id="pan"></span>
+        </div>
+        <div class="ipo-details">
+            <label>Application Number:</label> <span id="applicationNumber"></span>
+        </div>
+        <div class="ipo-details">
+            <label>Name Applied:</label> <span id="nameApplied"></span>
+        </div>
+        <div class="ipo-details">
+            <label>Shares Applied:</label> <span id="sharesApplied"></span>
+        </div>
+        <div class="ipo-details">
+            <label>Shares Alloted:</label> <span id="sharesAlloted"></span>
+        </div>
+        <div class="status" id="status"></div>
+        <h3 class="shares-alloted" id="sharesAllotedText"></h3>
+    </div>
+
+    <script>
+        // Fetch IPO allotment data from Flask route
+        fetch("/retrieve_ipo_allotment_data")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("companyName").innerText = data.company_name;
+                document.getElementById("pan").innerText = data.pan;
+                document.getElementById("applicationNumber").innerText = data.application_number;
+                document.getElementById("nameApplied").innerText = data.name_applied;
+                document.getElementById("sharesApplied").innerText = data.shares_applied;
+                document.getElementById("sharesAlloted").innerText = data.shares_alloted;
+                document.getElementById("status").innerText = "Status: " + data.status;
+                document.getElementById("sharesAllotedText").innerText = `You have been alloted ${data.shares_alloted} shares`;
+            })
+            .catch(error => console.error("Error fetching IPO allotment data:", error));
+    </script>
+</body>
+</html>

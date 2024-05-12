@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Nunito", sans-serif;
+            background-image: url('/static/graph.avif');
+            background-size: cover; /* Cover the entire viewport */
+            background-attachment: fixed;
+        }
+
+        .projects-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .project-block {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .project-block:hover {
+            transform: scale(1.05);
+        }
+
+        .project-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4F85EE;
+            margin-bottom: 10px;
+        }
+
+        .project-details {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .invest-btn {
+            background-color: #4F85EE;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .invest-btn:hover {
+            background-color: #3461A4;
+        }
+        h1,h2{
+            text-align: center;
+        }
+        .loading-indicator {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 4px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+    </style>
+</head>
+<body>
+    <br>
+    <h1>Your Watchlist</h1><hr>
+    <div class="projects-container" id="projectsContainer">
+        <!-- Project blocks will be dynamically added here -->
+    </div>
+    <div id="loadingIndicator" class="loading-indicator">
+        <div class="loader"></div>
+    </div>
+    <script>
+        // Fetch project data from Flask route
+        (async () => {
+            
+    try {
+        document.getElementById('loadingIndicator').style.display = 'block';
+        const response = await fetch("/retrieve_project_data_for_investor/{{user_id}}");
+        
+        const data = await response.json();
+
+        
+        const projectsContainer = document.getElementById("projectsContainer");
+
+        data.forEach(project => {
+            const projectBlock = document.createElement("div");
+            projectBlock.classList.add("project-block");
+
+            const projectName = document.createElement("div");
+            projectName.classList.add("project-name");
+            projectName.textContent = project.name;
+
+            const projectDetails = document.createElement("div");
+            projectDetails.classList.add("project-details");
+            projectDetails.textContent = `Total amount invested: ${project.total_amount_invested}    |    Ratings: ${project.ratings}    |    Targeted Fund: ${project.targeted_fund}`;
+
+            const investBtn = document.createElement("a");
+            investBtn.classList.add("invest-btn");
+            investBtn.textContent = "Explore";
+            investBtn.href = project.invest_link; // Link from Flask route
+
+            const linebreak = document.createElement("br");
+
+            projectBlock.appendChild(projectName);
+            projectBlock.appendChild(projectDetails);
+            projectBlock.appendChild(linebreak);
+            projectBlock.appendChild(investBtn);
+            projectsContainer.appendChild(projectBlock);
+        });document.getElementById('loadingIndicator').style.display = 'none';
+    } catch (error) {
+        document.getElementById('loadingIndicator').style.display = 'none';
+        console.error("Error fetching project data:", error);
+    }
+})();
+
+            
+    </script>
+</body>
+</html>

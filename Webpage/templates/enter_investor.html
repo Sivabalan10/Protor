@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<title>Investor Details</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Nunito", sans-serif;
+        background-image: url('/static/graph.avif');
+        background-size: cover; /* Cover the entire viewport */
+        background-attachment: fixed;
+        color: #4f85ee;
+    }
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 35px;
+        box-shadow: 5px 5px 5px 7px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border-radius: 10px;
+        
+    }
+    .segment, .proceed-btn {
+    opacity: 0; /* Initially set opacity to 0 */
+    animation: fadeIn 2s ease forwards; /* Apply fade-in animation */
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0; /* Start from opacity 0 */
+        }
+        to {
+            opacity: 1; /* Fade in to opacity 1 */
+        }
+    }
+    h1 {
+        text-align: center;
+    }
+    .segment {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #4f85ee;
+        padding-bottom: 20px;
+    }
+    .segment:last-child {
+        border-bottom: none;
+    }
+    .label {
+        font-weight: bold;
+        margin-bottom: 10px;
+        display: block;
+    }
+    .input-field {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .dropdown {
+        width:90%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #f9f9f9;
+    }
+    .checkbox {
+        margin-bottom: 20px;
+    }
+    .proceed-btn {
+        background-color: #4f85ee;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+    .proceed-btn:hover {
+        background-color: #366fc2;
+    }
+    .progress-bar {
+        background-color: #ccc;
+        height: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    .progress {
+        background-color:#4f85ee;
+        height: 100%;
+        width: 0;
+        border-radius: 5px;
+    }
+    .loading-indicator {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 4px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Investor Details</h1>
+
+    <!-- Segment 1: Personal Information -->
+    <div class="segment">
+        <div class="progress-bar">
+            <div class="progress" id="progress1"></div>
+        </div>
+        <label class="label" for="username">Name:</label>
+        <input type="text" id="username" class="input-field" required>
+        <label class="label" for="project_interest">Project Interest:</label>
+        <select id="project_interest" class="dropdown" required>
+            <option value="">Select Project Interest</option>
+            <option value="Assistive Technology">Assistive Technology</option>
+            <option value="Agriculture">Agriculture</option>
+            <option value="Environment">Environment</option>
+            <option value="Energy">Energy</option>
+            <option value="Education">Education</option>
+            <option value="Waste Management">Waste Management</option>
+        </select>
+        <label class="label" for="description">Brief Description:</label>
+        <textarea id="description" class="input-field" rows="4" required></textarea>
+    </div>
+
+    <!-- Segment 2: Contact Information -->
+    <div class="segment">
+        <div class="progress-bar">
+            <div class="progress" id="progress2"></div>
+        </div>
+        <label class="label" for="investor_industry">Investor Industry:</label>
+        <select id="investor_industry" class="dropdown" required>
+            <option value="">Select Investor Industry</option>
+            <option value="Finance">Finance</option>
+            <option value="Technology">Technology</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Real Estate">Real Estate</option>
+            <option value="Manufacturing">Manufacturing</option>
+        </select>
+        <label class="label" for="sector">Sector:</label>
+        <select id="sector" class="dropdown" required>
+            <option value="">Select Sector</option>
+            <option value="Private">Private</option>
+            <option value="Public">Public</option>
+            <option value="Non-profit">Non-profit</option>
+        </select>
+        <label class="label" for="state">State:</label>
+        <input type="text" id="state" class="input-field" required>
+        <label class="label" for="city">Country:</label>
+        <input type="text" id="city" class="input-field" required>
+        <label class="label" for="mobile_number">Mobile Number:</label>
+        <input type="tel" id="mobile_number" class="input-field" required>
+        <label class="label" for="linked_url">Linked URL:</label>
+        <input type="url" id="linked_url" class="input-field" required>
+        <label class="label" for="email">Email:</label>
+        <input type="email" id="email" class="input-field" required>
+    </div>
+
+    <!-- Segment 3: Terms and Conditions -->
+    <div class="segment">
+        <div class="progress-bar">
+            <div class="progress" id="progress3"></div>
+        </div>
+        <input type="checkbox" id="terms" class="checkbox" required>
+        <label class="label" for="terms">I agree to the <a href="/termsandconditionsforinvestor">terms and conditions</a></label>
+    </div>
+
+    <!-- Proceed Button -->
+    <button class="proceed-btn" onclick="proceed()">Proceed</button>
+</div>
+<div id="loadingIndicator" class="loading-indicator">
+    <div class="loader"></div>
+</div>
+<script>
+    function proceed() {
+        document.getElementById('loadingIndicator').style.display = 'block';
+        var username = document.getElementById("username").value;
+        var projectInterest = document.getElementById("project_interest").value;
+        var description = document.getElementById("description").value;
+        var investorIndustry = document.getElementById("investor_industry").value;
+        var sector = document.getElementById("sector").value;
+        var state = document.getElementById("state").value;
+        var city = document.getElementById("city").value;
+        var mobileNumber = document.getElementById("mobile_number").value;
+        var linkedUrl = document.getElementById("linked_url").value;
+        var email = document.getElementById("email").value;
+        var terms = document.getElementById("terms").checked;
+        var user_id = "{{ user_id }}";
+        // Validation
+        if (!username || !projectInterest || !description || !investorIndustry || !sector || !state || !city || !mobileNumber || !linkedUrl || !email || !terms) {
+            document.getElementById('loadingIndicator').style.display = 'none';
+            Swal.fire({
+                        icon: 'error',
+                        title: 'Submission failed',
+                        text: 'Field cannot be empty',
+                    });
+            return;
+        }
+
+        // Proceed to submit data
+        var data = {
+            user_id: user_id,
+            username: username,
+            projectInterest: projectInterest,
+            description: description,
+            investorIndustry: investorIndustry,
+            sector: sector,
+            state: state,
+            country: city,
+            mobileNumber: mobileNumber,
+            linkedUrl: linkedUrl,
+            email: email
+        };
+
+        fetch('/store_investor', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                Swal.fire({
+                        icon: 'success',
+                        title: 'Submitted Successfully!',
+                        text: 'Redirecting please wait....',
+                        showConfirmButton: false
+                    });
+                    setTimeout(function() {window.location.href = '/investor/'+user_id;}, 2500);
+            } else {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Submission failed',
+                        text: 'Something went wrong',
+                });
+            }
+        })
+        .catch((error) => {
+            document.getElementById('loadingIndicator').style.display = 'none';
+            console.error('Error:', error);
+            alert("An error occurred. Please try again later.");
+        });
+    }
+
+    // Update progress bar width based on input completion
+    var progress1 = document.getElementById("progress1");
+    var progress2 = document.getElementById("progress2");
+    var progress3 = document.getElementById("progress3");
+    var inputs = document.querySelectorAll(".input-field");
+    var dropdowns = document.querySelectorAll(".dropdown");
+    var checkboxes = document.querySelectorAll(".checkbox");
+
+    function updateProgress() {
+        var totalInputs = inputs.length + dropdowns.length + checkboxes.length;
+        var completedInputs = 0;
+        inputs.forEach(input => {
+            if (input.value) {
+                completedInputs++;
+            }
+        });
+        dropdowns.forEach(dropdown => {
+            if (dropdown.value) {
+                completedInputs++;
+            }
+        });
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                completedInputs++;
+            }
+        });
+
+        var progressWidth = (completedInputs / totalInputs) * 100;
+        progress1.style.width = progressWidth + "%";
+        progress2.style.width = progressWidth + "%";
+        progress3.style.width = progressWidth + "%";
+    }
+
+    inputs.forEach(input => {
+        input.addEventListener("input", updateProgress);
+    });
+
+    dropdowns.forEach(dropdown => {
+        dropdown.addEventListener("change", updateProgress);
+    });
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", updateProgress);
+    });
+</script>
+</body>
+</html>
