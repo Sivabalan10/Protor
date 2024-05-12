@@ -25,36 +25,29 @@ def login():
     password = data.get("password")
     
     try:
-        # Authenticate user with Firebase Authentication
         user = auth.get_user_by_email(email)
-        
-        # Verify user's credentials in Firestore
         user_ref = db.collection('users').document(user.uid)
         user_data = user_ref.get().to_dict()
         
         if user_data and user_data.get('password') == password:
-            # Password matches, proceed
+            
             role = user_data.get('role')
             if role == 'investor':
-                # Redirect to investor route with user_id
+                
                 return jsonify({'success': True, 'redirect_url': '/investor/{}'.format(user.uid)})
             elif role == 'startup':
-                # Redirect to project route with user_id
+               
                 return jsonify({'success': True, 'redirect_url': '/project/{}'.format(user.uid)})
             else:
-                # Role not defined or invalid
                 return jsonify({'success': False, 'error': 'Invalid role'})
         else:
-            # Password does not match or user data not found
             return jsonify({'success': False, 'error': 'Invalid credentials'})
     
     except auth.AuthError as e:
-        # Handle Firebase Authentication errors
         print("Firebase Authentication Error:", e)
         return jsonify({'success': False, 'error': 'Authentication failed'})
     
     except Exception as e:
-        # Handle other exceptions
         print("Error:", e)
         return jsonify({'success': False, 'error': 'An error occurred'})
         
@@ -76,7 +69,6 @@ def account_added():
         email = data.get("email")
         password = data.get("password")
         try:
-            # Create user in Firebase Authentication
             user = auth.create_user(
                 email=email,
                 password=password
@@ -86,10 +78,7 @@ def account_added():
             user_ref.set({
                 'email': email,
                 'password': password
-                # Add more user data as needed
             })
-
-            # Return user ID as JSON response
             return jsonify({"success": True, "user_id": user.uid})
         except Exception as e:
             return jsonify({"message": str(e)}), 500
@@ -102,11 +91,9 @@ def role_choosing(user_id):
         data = request.get_json()
         role = data.get("role")
         try:
-            # Update user document in Firestore with role information
             user_ref = db.collection('users').document(user_id)
             user_ref.update({
                 'role': role
-                # Add more user data as needed
             })
             return jsonify({"success": True, "user_id": user_id, "role": role})
         except Exception as e:
@@ -216,31 +203,24 @@ def retrieve_project_data_for_investor(user_id):
     projects = []
 
     try:
-        # Query the Firestore collection to get startup users
         startup_users_ref = db.collection('users').where('role', '==', 'startup')
         startup_users = startup_users_ref.stream()
-
-        # Iterate over each startup user
         for startup_user in startup_users:
             user_data = startup_user.to_dict()
             project_name = user_data.get('projectName')
             expected_fund = user_data.get('expectedFund')
             total_amount_invested =  user_data.get('total_amount_invested')
-            # Append project data to the projects list
             projects.append({
                 "name": project_name,
                 "total_amount_invested": total_amount_invested,  
-                "ratings": 4.5,  # Hardcoded value
+                "ratings": 4.5,  
                 "targeted_fund": expected_fund,
                 "invest_link": f"/portfolio_call/{startup_user.id}/{user_id}"
             })
 
     except Exception as e:
-        # Handle any exceptions
         print("Error:", e)
         return jsonify({"error": str(e)}), 500
-
-    # Return the project data as JSON
     return jsonify(projects)
 
 # Watchlist page
@@ -248,6 +228,7 @@ def retrieve_project_data_for_investor(user_id):
 def watchlist(user_id):
     return render_template('watchlist.html',user_id=user_id)
 
+# tested using hardcoded values
 # @app.route('/retrieve_watchlist')
 # def retrieve_watchlist():
 #     projects = [
@@ -338,11 +319,8 @@ def sebi_apply():
 @app.route('/retrive_profile_data/<string:user_id>',methods=['GET','POST'])
 def retrive_profile_data(user_id):
     try:
-        # Retrieve user data from Firestore based on user_id
         user_ref = db.collection('users').document(user_id)
         user_data = user_ref.get().to_dict()
-
-        # Format the profile data
         if user_data.get("role", "") == "investor":
             profile_data = {
                 "name": user_data.get("investor_name", ""),
@@ -373,14 +351,12 @@ def portfolio_call(user_id,project_id):
 @app.route('/retrieve_project_data/<string:user_id>/<string:project_id>')
 def retrieve_project_data(user_id,project_id):
     try:
-        # Query the Firestore collection to get the project data for the specified user ID
         if project_id == "null":
             role = "startup"
         else:
             role = "investor"
         user_ref = db.collection('users').document(user_id)
         user_data = user_ref.get().to_dict()
-        # Extract project data from the user's document
         project_data = {
             "name": user_data.get('projectName'),
             "total_fund": user_data.get('expectedFund'),
@@ -401,7 +377,6 @@ def retrieve_project_data(user_id,project_id):
         return jsonify(project_data)
 
     except Exception as e:
-        # Handle any exceptions
         print("Error:", e)
         return jsonify({"error": str(e)}), 500
 
@@ -409,8 +384,6 @@ def retrieve_project_data(user_id,project_id):
 def investor_name_get(project_id):
     user_ref = db.collection('users').document(project_id)
     user_data = user_ref.get().to_dict()
-
-        # Extract project data from the user's document
     investor_name = {
         "name": user_data.get('investor_name'),
     }
