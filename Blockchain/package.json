@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@truffle/contract": "^4.6.31",
+    "cors": "^2.8.5",
+    "web3": "^4.8.0"
+  }
+}
