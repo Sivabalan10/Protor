@@ -228,34 +228,6 @@ def retrieve_project_data_for_investor(user_id):
 def watchlist(user_id):
     return render_template('watchlist.html',user_id=user_id)
 
-# tested using hardcoded values
-# @app.route('/retrieve_watchlist')
-# def retrieve_watchlist():
-#     projects = [
-#     {
-#         "name": "Animal_detection",
-#         "holders": 100,
-#         "ratings": 4.5,
-#         "targeted_fund": "$50,000",
-#         "invest_link": "/portfolio_call"
-#     },
-#     {
-#         "name": "PCB_Board_Detection",
-#         "holders": 75,
-#         "ratings": 4.2,
-#         "targeted_fund": "$30,000",
-#         "invest_link": "/portfolio_call"
-#     },
-#     {
-#         "name": "Social impact",
-#         "holders": 120,
-#         "ratings": 4.8,
-#         "targeted_fund": "$80,000",
-#         "invest_link": "/portfolio_call"
-#     }
-#     ]
-#     return jsonify(projects)
-
 #investment details
 @app.route("/investor/investment_details")
 def investment_details():
