@@ -1,28 +1,39 @@
----
+# PROTOR: Where Project Meets Prosperity
 
-# Social Impact Project
-
-## Introduction
-
-The Social Impact Project aims to connect potential investors with social impact projects through a crowdfunding platform. This full-stack website facilitates the funding of projects that have a positive social impact. Additionally, the project is designed to provide real-time analysis, project portfolio management, and seamless integration with regulatory bodies such as SEBI for potential listing on the stock market.
+*Protor* is a revolutionary web platform designed to seamlessly connect innovative social impact projects with eager investors. Built with simplicity and security in mind, our platform empowers investors to explore, evaluate, and invest in their preferred projects while providing project holders with a streamlined avenue to showcase their ventures.
 
 ## Features
 
-### 1. Crowdfunding Platform
-- Investors can browse through a variety of social impact projects.
-- Project creators can create campaigns to raise funds for their projects.
-- Secure payment gateway integration for seamless transactions.
+- *Secure Blockchain Transactions:* Utilizing cutting-edge blockchain technology, Protor ensures the security and integrity of all financial transactions, giving investors peace of mind.
 
-### 2. Real-time Analysis
-- Real-time analysis of project performance and social impact metrics.
-- Data visualization to help investors make informed decisions.
+- *Project Upload:* Start-ups and project holders can easily upload their projects to the platform, complete with comprehensive details and documentation, facilitating exposure and visibility.
 
-### 3. Project Portfolio Management
-- Investors can manage their portfolio of social impact projects.
-- Track project performance, funding status, and impact metrics.
+- *Direct Stock Exchange Integration:* For start-ups aspiring to list their companies on the stock market, Protor seamlessly directs them to corresponding stock exchanges, guiding them through the application process if they meet the specified criteria.
 
-### 4. SEBI Integration
-- Seamless integration with regulatory bodies like SEBI for potential listing on the stock market.
-- Compliance with regulatory requirements for transparency and accountability.
+- *Inclusive Investment Opportunities:* With no financial accreditation requirements, Protor democratizes investment opportunities, allowing anyone to invest in their desired projects directly through our platform.
 
 ---
+
+## How to run our project on your machine?
+ - Clone our Repository
+ - Open Blockchain directory and run truffle compile and truffle migrate.
+ - Open Blockchain/scripts and run node invest.js to turn on the Blockchain server. Make sure that you have installed Ganache.
+ - Open Webpage directory and run app.py
+
+--- 
+
+## Getting Started
+
+To begin your journey with Project Protor, simply visit our website (website line) and sign up as either an investor or a project holder. Once registered, investors can start exploring and investing in projects, while project holders can upload their ventures to attract potential investors.
+
+## Contributing
+
+We welcome contributions from the community to enhance Protor. Whether it's bug fixes, feature additions, or improvements to documentation, feel free to open a pull request or submit an issue on our [https://github.com/Sivabalan10/Protor]
+
+---
+
+## Support
+
+For any questions, feedback, or assistance, please reach out to our support team at sparkysiva10@gmail.com / whatsapp - 6383577376. We're dedicated to providing exceptional support and guidance to our users.
+
+## Developed during the event hackbangalore2024
